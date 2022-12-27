@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -25,6 +26,13 @@ return new class extends Migration
             $table->boolean('whatsapp_notification')->default(false);
             $table->timestamps();
         });
+
+        DB::table('laundry_settings')->insert([
+            'name' => 'Laundry',
+            'alamat' => 'Jl. Jalan',
+            'no_telp' => '08123456789',
+            'photo_path' => 'https://via.placeholder.com/150',
+        ]);
     }
 
     /**
