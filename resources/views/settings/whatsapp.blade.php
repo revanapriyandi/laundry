@@ -80,8 +80,8 @@
                                     <h5 class="font-normal dark:text-white text-slate-400">Scan qr code untuk
                                         menghubungkan
                                         ke api Whatsapp.</h5>
-                                    <img class="w-full mx-auto rounded-xl shadow-soft-3xl" src="{{ $image }}"
-                                        alt="chair">
+                                    <img width="30px" class="w-1/2 mx-auto rounded-xl shadow-soft-3xl"
+                                        src="{{ $image }}" alt="chair">
 
                                 </div>
                             </div>

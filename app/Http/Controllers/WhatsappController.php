@@ -45,8 +45,8 @@ class WhatsappController extends Controller
         // $response = curl_exec($curl);
 
         // curl_close($curl);
-        while ($res['success'] === 'false' || !$res['success']) {
-            $res = Http::delete(env('URL_WA_SERVER') . '/sessions/delete/laundryapp');
+        while ($res['success'] === false || !$res['success']) {
+            $res = Http::delete($this->base_url . '/sessions/delete/laundryapp');
         }
         return redirect()->back()->with('success', 'Berhasil Disconnect Whatsapp');
     }
@@ -58,10 +58,11 @@ class WhatsappController extends Controller
         $cek = $find;
         $image = '';
 
-        if ($cek['message'] == 'Session not found.' &&  $cek['success'] == 'false') {
+        if ($cek['message'] == 'Session not found.' &&  $cek['success'] === false) {
             $response = Http::post($this->base_url . '/sessions/add', ['id' => 'laundryapp', 'isLegacy' => 'false'])->json();
             $res = $response;
 
+            // dd($res);
             $image = $res['data']['qr'];
         }
 
