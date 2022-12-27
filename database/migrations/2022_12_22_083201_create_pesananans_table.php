@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignId('diskon_id')->nullable();
             $table->string('total');
             $table->text('catatan_umum')->nullable();
-            $table->enum('status', ['diterima', 'proses', 'siap_diambil', 'selesai', 'batal']);
+            $table->enum('status', ['diterima', 'proses', 'siap_diambil', 'selesai', 'batal', 'pending']);
             $table->dateTime('tanggal_dipesan');
             $table->dateTime('estimasi_selesai');
             $table->timestamps();
