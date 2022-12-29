@@ -61,7 +61,7 @@ Rincian pesanan:
 ' . $notifiable->items[0]->name . '
 ';
         foreach ($notifiable->items as $key => $value) {
-            $body .= $value->berat . ' kg x' . $value->layanan->harga . ' = ' . 'Rp. ' . number_format($value->total, 0, ',', '.');
+            $body .= $value->berat . ' kg x' . $value->layanan->harga . ' = ' . 'Rp. ' . number_format($value->total, 0, ',', '.') . "\n\r";
         }
         $body .= '
 

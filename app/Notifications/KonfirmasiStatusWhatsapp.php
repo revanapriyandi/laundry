@@ -50,11 +50,12 @@ class KonfirmasiStatusWhatsapp extends Notification
         // }
 
         // return $res;
-        $body = 'Halo, ' . $notifiable->pelanggan->name . ',
+        $body = '
+Halo, ' . $notifiable->pelanggan->name . ',
 
-        Laundrymu sudah kami terima dan akan menghubungi kamu jika sudah selesai.
+Laundrymu sudah kami terima dan akan menghubungi kamu jika sudah selesai.
 
-        Terima Kasih';
+Terima Kasih';
 
         return (new WhatsAppMessage)
             ->content($body);
