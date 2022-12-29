@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Jobs\NewPengguna;
-use App\Jobs\NewPenggunaWhatsapp;
 use Illuminate\Http\Request;
 use App\Models\LaundrySettings;
 use App\Models\NotifikasiSetting;
+use App\Notifications\NewPengguna;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use App\Notifications\NewPesananWhatsapp;
+use App\Notifications\NewPenggunaWhatsapp;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\NewPenggunaWhatsapp as NotificationsNewPenggunaWhatsapp;
 
 class PelangganController extends Controller
 {
@@ -71,11 +74,13 @@ class PelangganController extends Controller
             // while ($res['success'] === 'false' || !$res['success']) {
             //     $res = $this->sendWhatsapp($user, $setting);
             // }
-            dispatch(new NewPenggunaWhatsapp($user));
+            // dispatch(new NewPenggunaWhatsapp($user));
+            Notification::send($user, new NewPenggunaWhatsapp($user));
         }
 
         if ($setting->telegram_notification == true && $notif->telegram == true) {
-            dispatch(new NewPengguna($user));
+            // dispatch(new NewPengguna($user));
+            Notification::send($user, new NewPengguna($user));
         }
 
         return redirect()->route('pelanggan.index')->with('success', 'Pelanggan berhasil ditambahkan');

@@ -6,17 +6,19 @@ use DateTime;
 use App\Models\User;
 use App\Models\Layanan;
 use App\Models\Pesanan;
-use App\Jobs\NewPesanan;
 use App\Models\PesananItem;
 use Illuminate\Http\Request;
-use App\Jobs\PerubahanStatus;
 use App\Models\LaundrySettings;
-use App\Jobs\NewPesananWhatsapp;
 use App\Models\NotifikasiSetting;
+use App\Notifications\NewPesanan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
-use App\Jobs\PerubahanStatusWhatsapp;
-use App\Jobs\KonfirmasiStatusWhatsapp;
+use App\Notifications\NewPesananWhatsapp;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\PerubahanStatusPesanan;
+use App\Notifications\PerubahanStatusWhatsapp;
+use App\Notifications\KonfirmasiStatusWhatsapp;
+use App\Notifications\NewPesananWhatsapp as NotificationsNewPesananWhatsapp;
 
 class TransaksiController extends Controller
 {
@@ -108,11 +110,13 @@ class TransaksiController extends Controller
             // while ($res['success'] === 'false' || !$res['success']) {
             //     $res = $this->sendNotaWhatsapp($data, $item);
             // }
-            dispatch(new NewPesananWhatsapp($data));
+            // dispatch(new NewPesananWhatsapp($data));
+            Notification::send($data, new NewPesananWhatsapp($data));
         }
 
         if ($setting->telegram_notification == true && $notif->telegram == true) {
-            dispatch(new NewPesanan($data));
+            // dispatch(new NewPesanan($data));
+            Notification::send($data, new NewPesanan($data));
         }
         return redirect()->route('pesanan.konfirmasi', $data->id);
     }
@@ -181,11 +185,13 @@ class TransaksiController extends Controller
             // while ($res['success'] === 'false' || !$res['success']) {
             //     $res = $this->sendWaKonfirmasi($data);
             // }
-            dispatch(new KonfirmasiStatusWhatsapp($data));
+            // dispatch(new KonfirmasiStatusWhatsapp($data));
+            Notification::send($data, new KonfirmasiStatusWhatsapp($data));
         }
 
         if ($setting->telegram_notification == true && $notif->telegram == true) {
-            dispatch(new PerubahanStatus($data));
+            // dispatch(new PerubahanStatus($data));
+            Notification::send($data, new PerubahanStatusPesanan($data));
         }
         return redirect()->route('pesanan.index')->with('success', 'Pesanan berhasil dibuat');
     }
@@ -218,14 +224,17 @@ class TransaksiController extends Controller
         $notif = NotifikasiSetting::where('id', '3')->first();
 
         if ($setting->whatsapp_notification == true || $notif->whatsapp == true) {
-            dispatch(new PerubahanStatusWhatsapp($data));
+            // dispatch(new PerubahanStatusWhatsapp($data));
+            Notification::send($data, new PerubahanStatusWhatsapp($data));
             if ($data->status == 'selesai') {
-                dispatch(new NewPesananWhatsapp($data));
+                // dispatch(new NewPesananWhatsapp($data));
+                Notification::send($data, new NewPesananWhatsapp($data));
             }
         }
 
         if ($setting->telegram_notification == true && $notif->telegram == true) {
-            dispatch(new PerubahanStatus($data));
+            // dispatch(new PerubahanStatus($data));
+            Notification::send($data, new PerubahanStatusPesanan($data));
         }
 
         return redirect()->route('pesanan.index')->with('success', 'Status pesanan berhasil diubah');

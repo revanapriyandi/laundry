@@ -67,4 +67,9 @@ class User extends Authenticatable
         }
         return $nomorhp;
     }
+
+    public function routeNotificationForWhatsApp()
+    {
+        return $this->formatPhoneNumber();
+    }
 }

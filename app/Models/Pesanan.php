@@ -39,4 +39,9 @@ class Pesanan extends Model
     {
         return date('d F Y', strtotime($this->created_at));
     }
+
+    public function routeNotificationForWhatsApp()
+    {
+        return $this->pelanggan->formatPhoneNumber();
+    }
 }

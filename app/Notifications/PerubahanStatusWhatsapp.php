@@ -3,13 +3,13 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use App\Models\LaundrySettings;
+use App\Channels\WhatsAppChannel;
+use App\Channels\Messages\WhatsAppMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use NotificationChannels\Telegram\TelegramMessage;
 
-class PerubahanStatusPesanan extends Notification
+class PerubahanStatusWhatsapp extends Notification
 {
     use Queueable;
 
@@ -31,7 +31,7 @@ class PerubahanStatusPesanan extends Notification
      */
     public function via($notifiable)
     {
-        return ['telegram'];
+        return [WhatsAppChannel::class];
     }
 
     /**
@@ -40,7 +40,7 @@ class PerubahanStatusPesanan extends Notification
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toTelegram($notifiable)
+    public function toWhatsApp($notifiable)
     {
         $body = 'Halo, ' . $notifiable->pelanggan->name . ',
 
@@ -55,9 +55,7 @@ Status pesananmu sudah berubah menjadi ' . strtoupper($notifiable->status);
         $body .= '
 
 Terima Kasih';
-        $setting = LaundrySettings::first();
-        return TelegramMessage::create()
-            ->to($setting->TELEGRAM_ID_CHANEL)
+        return (new WhatsAppMessage)
             ->content($body);
     }
 
