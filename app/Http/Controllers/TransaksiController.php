@@ -101,23 +101,7 @@ class TransaksiController extends Controller
             'total' => $total,
             'catatan' => $request->catatan,
         ]);
-        $setting = LaundrySettings::first();
-        $notif = NotifikasiSetting::where('id', '2')->first();
 
-        if ($setting->whatsapp_notification == true && $notif->whatsapp == true) {
-            // $res = $this->sendNotaWhatsapp($data, $item);
-
-            // while ($res['success'] === 'false' || !$res['success']) {
-            //     $res = $this->sendNotaWhatsapp($data, $item);
-            // }
-            // dispatch(new NewPesananWhatsapp($data));
-            Notification::send($data, new NewPesananWhatsapp($data));
-        }
-
-        if ($setting->telegram_notification == true && $notif->telegram == true) {
-            // dispatch(new NewPesanan($data));
-            Notification::send($data, new NewPesanan($data));
-        }
         return redirect()->route('pesanan.konfirmasi', $data->id);
     }
 
@@ -157,6 +141,16 @@ class TransaksiController extends Controller
             'total' => $subtotal,
         ]);
 
+        $setting = LaundrySettings::first();
+        $notif = NotifikasiSetting::where('id', '2')->first();
+
+        if ($setting->whatsapp_notification == true && $notif->whatsapp == true) {
+            Notification::send($data, new NewPesananWhatsapp($data));
+        }
+
+        if ($setting->telegram_notification == true && $notif->telegram == true) {
+            Notification::send($data, new NewPesanan($data));
+        }
 
         return redirect()->route('pesanan.konfirmasi', $data->id);
     }
